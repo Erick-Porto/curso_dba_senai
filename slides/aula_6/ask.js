@@ -67,7 +67,7 @@ const ask = {
   },
   7: {
     type: "mult",
-    ask: "Exemplo de SGBD orientado a objetos:",
+    ask: "Exemplo de SGBD orientado a documentos:",
     options: {
       1: "Oracle",
       2: "MongoDB",
