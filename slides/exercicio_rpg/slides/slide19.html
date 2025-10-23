@@ -1,0 +1,54 @@
+<h2><i class="fas fa-tasks"></i> Missão 1: Os Diagramas Perdidos (DDL)</h2>
+<p>
+  Com o mapa do reino em mãos, você identifica as lacunas deixadas pelo
+  cataclisma. A Forja do Destino precisa de duas novas plantas arquitetônicas
+  (tabelas) para funcionar.
+</p>
+<p>
+  <strong>Sua Tarefa (DDL - <code>CREATE TABLE</code>):</strong>
+</p>
+<ol>
+  <li>
+    <strong>Crie a Tábua de Saques (<code>MonstroLoot</code>):</strong>
+    <ul>
+      <li>
+        <i class="fas fa-fw fa-link"></i> Esta tabela deve ligar um
+        <code>MonstroID</code> a um <code>ItemID</code> (o material que ele pode
+        derrubar).
+      </li>
+      <li>
+        <i class="fas fa-fw fa-dice"></i> Deve incluir uma coluna
+        <code>ChanceDrop DECIMAL(5,2)</code> (ex: 0.75 para 75%) e uma
+        <code>QuantidadeMin</code> e <code>QuantidadeMax</code>.
+      </li>
+      <li>
+        <i class="fas fa-fw fa-key"></i> Defina chaves primárias e estrangeiras
+        apropriadas.
+      </li>
+      <li>
+        <i class="fas fa-fw fa-feather-alt"></i> Popule esta tabela: decida
+        quais monstros (ex: 'Lobo Cinzento') derrubam quais materiais (ex:
+        'Couro de Besta') e com qual chance.
+      </li>
+    </ul>
+  </li>
+  <li>
+    <strong>Crie a Tábua de Receitas (<code>ReceitasCrafting</code>):</strong>
+    <ul>
+      <li>
+        <i class="fas fa-fw fa-book"></i> Esta tabela definirá como criar itens.
+        Ela precisa de um <code>ItemID_Resultado</code> (o item a ser criado,
+        ex: 'Armadura de Couro Batido').
+      </li>
+      <li>
+        <i class="fas fa-fw fa-link"></i> Ela deve estar ligada a uma outra
+        tabela, <code>ReceitaMateriais</code>, que listará quais
+        <code>ItemID_Material</code> e <code>Quantidade</code> são necessários.
+      </li>
+      <li>
+        <i class="fas fa-fw fa-key"></i> Defina as chaves e popule-a: por
+        exemplo, 2 'Couro de Besta' criam 1 'Armadura de Couro Batido'.
+      </li>
+    </ul>
+  </li>
+</ol>

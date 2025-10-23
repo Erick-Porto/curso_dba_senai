@@ -1,0 +1,52 @@
+<h2>
+  <i class="fas fa-hourglass-half"></i> Missão 4: O Pacto da Forja (Procedure +
+  Transação)
+</h2>
+<p>
+  O herói tem os materiais! Agora ele vai à Forja do Destino para criar seu
+  item. Esta operação é um ritual sagrado: ou funciona perfeitamente, ou falha e
+  nada é consumido. É um caso clássico para uma <strong>Transação</strong>.
+</p>
+<p>
+  <strong
+    >Sua Tarefa (<code>CREATE PROCEDURE</code> com
+    <code>TRANSACTION</code>):</strong
+  >
+</p>
+<ul>
+  <li>
+    <i class="fas fa-fw fa-fire"></i> Crie um procedimento
+    <code>sp_ForjarItem(IN heroi_id INT, IN receita_id INT)</code>.
+  </li>
+  <li>
+    Este procedimento deve:
+    <ol>
+      <li>Iniciar o ritual: <code>START TRANSACTION;</code></li>
+      <li>
+        Verificar se o herói (<code>heroi_id</code>) possui todos os materiais
+        necessários (e na quantidade certa) para a <code>receita_id</code>.
+      </li>
+      <li>
+        <strong>Se o herói NÃO tiver os materiais:</strong> Desfaça o ritual
+        (<code>ROLLBACK;</code>) e retorne uma mensagem de erro.
+      </li>
+      <li>
+        <strong>Se o herói TIVER os materiais:</strong>
+        <ul>
+          <li>
+            Consuma os materiais: Use <code>UPDATE</code> ou
+            <code>DELETE</code> no <code>InventarioItens</code> do herói.
+          </li>
+          <li>
+            Entregue o item: Use <code>INSERT</code> ou <code>UPDATE</code> para
+            adicionar o <code>ItemID_Resultado</code> ao
+            <code>InventarioItens</code> do herói.
+          </li>
+        </ul>
+      </li>
+      <li>
+        Sele o pacto: <code>COMMIT;</code> e retorne uma mensagem de sucesso.
+      </li>
+    </ol>
+  </li>
+</ul>

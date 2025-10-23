@@ -1,0 +1,59 @@
+<h2><i class="fas fa-trophy"></i> O Julgamento Final: A Forja Desperta!</h2>
+<p>
+  Arquiteto Arcano, sua provação está completa! Para provar sua maestria,
+  entregue seus pergaminhos de script (arquivos .sql) contendo:
+</p>
+<ol>
+  <li>
+    <strong>Diagrama DER (Missão 0):</strong> A imagem (PNG/JPG) ou PDF do seu
+    Diagrama Entidade-Relacionamento completo.
+  </li>
+  <li>
+    <strong>DDL (Missão 1):</strong> Os comandos <code>CREATE TABLE</code> para
+    <code>MonstroLoot</code> e <code>ReceitasCrafting</code> (e suas tabelas de
+    suporte), e os <code>INSERT</code>s para populá-las.
+  </li>
+  <li>
+    <strong>Trigger (Missão 2):</strong> O comando
+    <code>CREATE TRIGGER</code> para <code>trg_MonstroDerrotado_Loot</code>.
+  </li>
+  <li>
+    <strong>Procedimentos (Missão 3 e 4):</strong> Os comandos
+    <code>CREATE PROCEDURE</code> para <code>sp_IniciarCombate</code>,
+    <code>sp_ResolverLoot</code> e <code>sp_ForjarItem</code>.
+  </li>
+  <li>
+    <strong>Views (Missão 5):</strong> Os comandos <code>CREATE VIEW</code> para
+    <code>vw_BestiarioDeLoot</code>, <code>vw_InventarioDetalhado</code> e
+    <code>vw_ReceitasDaForja</code>.
+  </li>
+  <li>
+    <strong>Script de Teste:</strong> Um pequeno script que mostra seu trabalho
+    em ação!
+    <ul>
+      <li>Ex: <code>CALL sp_IniciarCombate(1, 2);</code></li>
+      <li>
+        <code
+          >UPDATE Monstros SET StatusMonstro = 'Derrotado' WHERE MonstroID =
+          2;</code
+        >
+      </li>
+      <li>
+        <code
+          >SELECT * FROM vw_InventarioDetalhado WHERE NomePersonagem =
+          'Aragorn';</code
+        >
+        (para ver o loot)
+      </li>
+      <li><code>CALL sp_ForjarItem(1, 1);</code> (para testar a forja)</li>
+      <li>
+        <code
+          >SELECT * FROM vw_InventarioDetalhado WHERE NomePersonagem =
+          'Aragorn';</code
+        >
+        (para ver o item criado)
+      </li>
+    </ul>
+  </li>
+</ol>
+<p>Que seus comandos sejam precisos e suas transações, seguras! Boa sorte!</p>

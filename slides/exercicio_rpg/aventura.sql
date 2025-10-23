@@ -1,5 +1,6 @@
 -- =============================================
 -- Script para Criação do Banco de Dados RPG_Mundo
+-- PROJETO: A FORJA DO DESTINO (Versão Modificada)
 -- =============================================
 
 -- 1. CRIAR O BANCO DE DADOS (SE NÃO EXISTIR)
@@ -12,7 +13,7 @@ COLLATE utf8mb4_unicode_ci;
 -- =============================================
 USE RPG_Mundo;
 
--- 3. CRIAR AS TABELAS
+-- 3. CRIAR AS TABELAS (Estrutura Original)
 -- =============================================
 
 -- Tabela de Raças
@@ -98,14 +99,22 @@ CREATE TABLE IF NOT EXISTS Monstros (
     TipoMonstroID INT,
     NivelMonstro INT DEFAULT 1,
     PontosVidaMax INT DEFAULT 10,
+    PontosVidaAtuais INT DEFAULT 10,  -- Adicionado para controle de combate
     AtaqueBase INT DEFAULT 5,
     DefesaBase INT DEFAULT 3,
     ExperienciaConcedida INT DEFAULT 10,
     DescricaoMonstro TEXT,
+    
+    -- =============================================
+    -- MODIFICAÇÃO PARA O PROJETO:
+    -- Coluna para ser usada pelo Gatilho (Trigger)
+    StatusMonstro VARCHAR(20) DEFAULT 'Ativo' COMMENT 'Ex: Ativo, Derrotado, Em Fuga',
+    -- =============================================
+    
     FOREIGN KEY (TipoMonstroID) REFERENCES TiposMonstro(TipoMonstroID) ON DELETE SET NULL ON UPDATE CASCADE
 );
 
--- Tabela Associativa: Magias Conhecidas por Monstros (Opcional, mas interessante)
+-- Tabela Associativa: Magias Conhecidas por Monstros
 CREATE TABLE IF NOT EXISTS MonstroMagias (
     MonstroID INT,
     MagiaID INT,
@@ -114,7 +123,7 @@ CREATE TABLE IF NOT EXISTS MonstroMagias (
     FOREIGN KEY (MagiaID) REFERENCES Magias(MagiaID) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
--- Tabela de Cenários (Locais do Jogo)
+-- Tabela de Cenários
 CREATE TABLE IF NOT EXISTS Cenarios (
     CenarioID INT AUTO_INCREMENT PRIMARY KEY,
     NomeCenario VARCHAR(100) NOT NULL UNIQUE,
@@ -123,7 +132,7 @@ CREATE TABLE IF NOT EXISTS Cenarios (
     TipoAmbiente VARCHAR(50) COMMENT 'Ex: Floresta, Caverna, Cidade, Masmorra'
 );
 
--- Tabela Associativa: Monstros por Cenário (Onde os monstros podem ser encontrados)
+-- Tabela Associativa: Monstros por Cenário
 CREATE TABLE IF NOT EXISTS CenarioMonstros (
     CenarioID INT,
     MonstroID INT,
@@ -133,7 +142,7 @@ CREATE TABLE IF NOT EXISTS CenarioMonstros (
     FOREIGN KEY (MonstroID) REFERENCES Monstros(MonstroID) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
--- Tabela de Itens
+-- Tabela de Tipos de Item
 CREATE TABLE IF NOT EXISTS TiposItem (
     TipoItemID INT AUTO_INCREMENT PRIMARY KEY,
     NomeTipoItem VARCHAR(50) NOT NULL UNIQUE COMMENT 'Ex: Arma, Armadura, Poção, Acessório, Chave'
@@ -164,13 +173,14 @@ CREATE TABLE IF NOT EXISTS InventarioItens (
     ItemID INT,
     Quantidade INT DEFAULT 1,
     Equipado BOOLEAN DEFAULT FALSE,
-    PRIMARY KEY (InventarioID, ItemID), -- Um item pode aparecer uma vez por inventário (controlar quantidade)
+    PRIMARY KEY (InventarioID, ItemID),
     FOREIGN KEY (InventarioID) REFERENCES Inventarios(InventarioID) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (ItemID) REFERENCES Itens(ItemID) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 
--- 4. POPULAR AS TABELAS COM DADOS INICIAIS
+-- =============================================
+-- 4. POPULAR AS TABELAS (Dados Iniciais + Modificações)
 -- =============================================
 
 -- Populando Raças
@@ -211,29 +221,22 @@ INSERT INTO Magias (NomeMagia, DescricaoMagia, TipoMagiaID, CustoMana, DanoBase,
 ('Enfraquecer', 'Reduz o ataque do inimigo.', 4, 10, 0, 0, 2);
 
 -- Populando Magias Aprendidas por Personagens
--- Gandalf (PersonagemID 3) aprende Bola de Fogo e Escudo Mágico
-INSERT INTO PersonagemMagias (PersonagemID, MagiaID) VALUES
-(3, 1), (3, 3);
--- Aragorn (PersonagemID 1) pode ter aprendido uma magia de cura (exemplo)
-INSERT INTO PersonagemMagias (PersonagemID, MagiaID) VALUES
-(1, 2); -- Supondo que ele possa aprender por algum motivo
+INSERT INTO PersonagemMagias (PersonagemID, MagiaID) VALUES (3, 1), (3, 3), (1, 2);
 
 -- Populando Tipos de Monstro
-INSERT INTO TiposMonstro (NomeTipoMonstro) VALUES
-('Humanoide'), ('Besta'), ('Morto-Vivo'), ('Elemental'), ('Dragão');
+INSERT INTO TiposMonstro (NomeTipoMonstro) VALUES ('Humanoide'), ('Besta'), ('Morto-Vivo'), ('Elemental'), ('Dragão');
 
 -- Populando Monstros
-INSERT INTO Monstros (NomeMonstro, TipoMonstroID, NivelMonstro, PontosVidaMax, AtaqueBase, DefesaBase, ExperienciaConcedida, DescricaoMonstro) VALUES
-('Goblin Lanceiro', 1, 1, 15, 8, 2, 10, 'Pequeno humanoide verde com uma lança enferrujada.'),
-('Lobo Cinzento', 2, 2, 25, 12, 4, 15, 'Predador comum das florestas.'),
-('Esqueleto Guerreiro', 3, 3, 30, 10, 5, 20, 'Restos reanimados de um antigo soldado.'),
-('Elemental de Fogo Pequeno', 4, 4, 40, 15, 3, 30, 'Uma manifestação viva do fogo.'),
-('Aranha Gigante', 2, 2, 20, 10, 3, 12, 'Uma aranha assustadoramente grande e venenosa.');
+INSERT INTO Monstros (NomeMonstro, TipoMonstroID, NivelMonstro, PontosVidaMax, PontosVidaAtuais, AtaqueBase, DefesaBase, ExperienciaConcedida, DescricaoMonstro) VALUES
+('Goblin Lanceiro', 1, 1, 15, 15, 8, 2, 10, 'Pequeno humanoide verde com uma lança enferrujada.'),
+('Lobo Cinzento', 2, 2, 25, 25, 12, 4, 15, 'Predador comum das florestas.'),
+('Esqueleto Guerreiro', 3, 3, 30, 30, 10, 5, 20, 'Restos reanimados de um antigo soldado.'),
+('Elemental de Fogo Pequeno', 4, 4, 40, 40, 15, 3, 30, 'Uma manifestação viva do fogo.'),
+('Aranha Gigante', 2, 2, 20, 20, 10, 3, 12, 'Uma aranha assustadoramente grande e venenosa.');
 
--- Monstros podem conhecer magias (ex: Elemental de Fogo conhece Bola de Fogo)
+-- Monstros podem conhecer magias
 INSERT INTO MonstroMagias (MonstroID, MagiaID) VALUES
 ((SELECT MonstroID FROM Monstros WHERE NomeMonstro = 'Elemental de Fogo Pequeno'), (SELECT MagiaID FROM Magias WHERE NomeMagia = 'Bola de Fogo'));
-
 
 -- Populando Cenários
 INSERT INTO Cenarios (NomeCenario, DescricaoCenario, NivelPerigoMin, TipoAmbiente) VALUES
@@ -254,17 +257,34 @@ INSERT INTO CenarioMonstros (CenarioID, MonstroID, FrequenciaAparicao) VALUES
 
 -- Populando Tipos de Item
 INSERT INTO TiposItem (NomeTipoItem) VALUES
-('Arma Curta'), ('Arma Longa'), ('Escudo'), ('Armadura Leve'), ('Armadura Pesada'), ('Poção'), ('Pergaminho'), ('Anel'), ('Amuleto'), ('Chave');
+('Arma Curta'), ('Arma Longa'), ('Escudo'), ('Armadura Leve'), ('Armadura Pesada'), ('Poção'), ('Pergaminho'), ('Anel'), ('Amuleto'), ('Chave'),
+-- =============================================
+-- MODIFICAÇÃO PARA O PROJETO:
+('Material de Crafting');
+-- =============================================
 
 -- Populando Itens
 INSERT INTO Itens (NomeItem, DescricaoItem, TipoItemID, Valor, Efeito, Raridade) VALUES
-('Adaga Enferrujada', 'Uma adaga simples e gasta.', 1, 5, '+2 Ataque', 'Comum'),
-('Espada Longa de Aço', 'Uma espada longa bem balanceada.', 2, 50, '+8 Ataque', 'Comum'),
-('Escudo de Madeira', 'Um escudo básico de madeira.', 3, 20, '+3 Defesa', 'Comum'),
-('Poção de Cura Leve', 'Restaura 25 Pontos de Vida.', 6, 25, 'Cura 25 PV', 'Comum'),
-('Pergaminho de Bola de Fogo', 'Permite conjurar Bola de Fogo uma vez.', 7, 100, 'Conjura Bola de Fogo', 'Incomum'),
-('Anel da Destreza', 'Um anel que aumenta a agilidade.', 8, 150, '+2 Destreza', 'Raro'),
-('Armadura de Couro Batido', 'Proteção leve e flexível.', 4, 70, '+5 Defesa', 'Comum');
+('Adaga Enferrujada', 'Uma adaga simples e gasta.', (SELECT TipoItemID FROM TiposItem WHERE NomeTipoItem = 'Arma Curta'), 5, '+2 Ataque', 'Comum'),
+('Espada Longa de Aço', 'Uma espada longa bem balanceada.', (SELECT TipoItemID FROM TiposItem WHERE NomeTipoItem = 'Arma Longa'), 50, '+8 Ataque', 'Comum'),
+('Escudo de Madeira', 'Um escudo básico de madeira.', (SELECT TipoItemID FROM TiposItem WHERE NomeTipoItem = 'Escudo'), 20, '+3 Defesa', 'Comum'),
+('Poção de Cura Leve', 'Restaura 25 Pontos de Vida.', (SELECT TipoItemID FROM TiposItem WHERE NomeTipoItem = 'Poção'), 25, 'Cura 25 PV', 'Comum'),
+('Pergaminho de Bola de Fogo', 'Permite conjurar Bola de Fogo uma vez.', (SELECT TipoItemID FROM TiposItem WHERE NomeTipoItem = 'Pergaminho'), 100, 'Conjura Bola de Fogo', 'Incomum'),
+('Anel da Destreza', 'Um anel que aumenta a agilidade.', (SELECT TipoItemID FROM TiposItem WHERE NomeTipoItem = 'Anel'), 150, '+2 Destreza', 'Raro'),
+('Armadura de Couro Batido', 'Proteção leve e flexível.', (SELECT TipoItemID FROM TiposItem WHERE NomeTipoItem = 'Armadura Leve'), 70, '+5 Defesa', 'Comum');
+
+-- =============================================
+-- MODIFICAÇÃO PARA O PROJETO: Novos Materiais
+-- =============================================
+SET @mat_craft_id = (SELECT TipoItemID FROM TiposItem WHERE NomeTipoItem = 'Material de Crafting');
+
+INSERT INTO Itens (NomeItem, DescricaoItem, TipoItemID, Valor, Efeito, Raridade) VALUES
+('Fragmento de Sombra', 'Uma essência escura que pulsa fracamente.', @mat_craft_id, 10, 'Material de Forja', 'Incomum'),
+('Essência Elemental', 'O núcleo de um espírito elemental.', @mat_craft_id, 20, 'Material de Forja', 'Raro'),
+('Couro de Besta', 'Pele resistente de um animal selvagem.', @mat_craft_id, 5, 'Material de Forja', 'Comum'),
+('Minério de Ferro', 'Um pedaço bruto de metal.', @mat_craft_id, 3, 'Material de Forja', 'Comum'),
+('Pena de Grifo', 'Uma pena leve e magicamente infundida.', @mat_craft_id, 15, 'Material de Forja', 'Raro');
+-- =============================================
 
 -- Populando Inventários (Criando um inventário para cada personagem)
 INSERT INTO Inventarios (PersonagemID) SELECT PersonagemID FROM Personagens;
@@ -284,4 +304,19 @@ INSERT INTO InventarioItens (InventarioID, ItemID, Quantidade, Equipado) VALUES
 -- =============================================
 -- FIM DO SCRIPT
 -- =============================================
-SELECT 'Banco de dados RPG_Mundo criado e populado com sucesso!' AS Status;
+SELECT 'Banco de dados RPG_Mundo (Versão PROJETO) criado e populado com sucesso!' AS Status;
+
+-- =============================================
+-- PONTO DE PARTIDA PARA OS ALUNOS:
+-- =============================================
+-- MISSÃO 1: Crie suas tabelas `MonstroLoot` e `ReceitasCrafting` aqui...
+--
+-- MISSÃO 2: Crie seu gatilho `trg_MonstroDerrotado_Loot` aqui...
+--
+-- MISSÃO 3: Crie seus procedimentos `sp_IniciarCombate` e `sp_ResolverLoot` aqui...
+--
+-- MISSÃO 4: Crie seu procedimento `sp_ForjarItem` aqui...
+--
+-- MISSÃO 5: Crie suas views `vw_BestiarioDeLoot`, `vw_InventarioDetalhado` e `vw_ReceitasDaForja` aqui...
+--
+-- =============================================

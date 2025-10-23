@@ -1,0 +1,37 @@
+<h2><i class="fas fa-scroll"></i> O Pergaminho Base: O Mundo Fraturado</h2>
+<p>
+  Para começar sua jornada, você recebe o "Pergaminho Base" (o script
+  <code>aventura_modificado.sql</code>). Este script contém a estrutura de
+  <strong>RPG_Mundo</strong> como ela é agora.
+</p>
+<p>Note as seguintes alterações feitas pelos Mestres do Jogo:</p>
+<ul>
+  <li>
+    <i class="fas fa-fw fa-plus-circle"></i> A tabela
+    <code>Monstros</code> agora possui uma coluna
+    <code>StatusMonstro VARCHAR(20) DEFAULT 'Ativo'</code>. Este será o
+    "interruptor" para nossas magias automáticas.
+  </li>
+  <li>
+    <i class="fas fa-fw fa-gem"></i> Um novo <code>TipoItemID</code> foi criado:
+    'Material de Crafting'.
+  </li>
+  <li>
+    <i class="fas fa-fw fa-flask"></i> Novos <code>Itens</code> foram
+    adicionados, como 'Fragmento de Sombra', 'Essência Elemental' e 'Couro de
+    Besta'. Atualmente, ninguém os possui.
+  </li>
+</ul>
+<p>
+  <i
+    class="fas fa-exclamation-triangle"
+    style="color: var(--rpg-red-error)"
+  ></i>
+  <strong>O GRANDE PROBLEMA:</strong> Não existe NENHUMA ligação entre os
+  monstros e os novos materiais! Não há como saber o que um "Lobo Cinzento"
+  deixa cair ao ser derrotado. Além disso, não há como combinar esses itens.
+</p>
+<p>
+  Seu primeiro dever é compreender o mundo como ele é, para então poder
+  expandi-lo.
+</p>

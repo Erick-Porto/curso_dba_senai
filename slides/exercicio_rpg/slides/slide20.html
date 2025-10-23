@@ -1,0 +1,36 @@
+<h2><i class="fas fa-magic"></i> Missão 2: O Eco da Morte (Triggers)</h2>
+<p>
+  Agora que sabemos o que os monstros derrubam, precisamos de uma magia que
+  automaticamente entregue o saque quando um monstro for derrotado.
+</p>
+<p>
+  <strong>Sua Tarefa (<code>CREATE TRIGGER</code>):</strong>
+</p>
+<ul>
+  <li>
+    <i class="fas fa-fw fa-shield-alt"></i> Crie um Gatilho (Trigger) chamado
+    <code>trg_MonstroDerrotado_Loot</code>.
+  </li>
+  <li>
+    <i class="fas fa-fw fa-hourglass-end"></i> Este gatilho deve disparar
+    <strong><code>AFTER UPDATE</code></strong> na tabela <code>Monstros</code>.
+  </li>
+  <li>
+    <i class="fas fa-fw fa-skull-crossbones"></i> A condição de disparo é: se o
+    valor <code>OLD.StatusMonstro</code> era 'Ativo' e o
+    <code>NEW.StatusMonstro</code> mudou para 'Derrotado'.
+  </li>
+  <li>
+    <i class="fas fa-fw fa-bolt"></i> <strong>Ação do Gatilho:</strong> O
+    gatilho deve invocar um procedimento (que você criará na próxima missão)
+    para fazer a lógica de "rolar os dados".
+  </li>
+  <li>
+    O gatilho deve chamar: <code>CALL sp_ResolverLoot(NEW.MonstroID)</code>.
+  </li>
+  <li>
+    <i class="fas fa-fw fa-question-circle"></i> Desafio: Como o procedimento
+    saberá para qual herói dar o loot? O gatilho não sabe quem o matou! (Dica: A
+    resposta está na próxima missão).
+  </li>
+</ul>

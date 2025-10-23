@@ -1,0 +1,64 @@
+<h2>
+  <i class="fas fa-cogs"></i> Missão 3: O Ritual do Saque (Procedure + Tabela
+  Temporária)
+</h2>
+<p>
+  O gatilho invocou o guardião. Agora, você deve criar esse guardião. Este
+  procedimento conterá a lógica central do sistema de saque, usando uma tabela
+  temporária para rastrear o combate.
+</p>
+<p>
+  <strong
+    >Sua Tarefa (<code>CREATE PROCEDURE</code> e
+    <code>TEMPORARY TABLE</code>):</strong
+  >
+</p>
+<ol>
+  <li>
+    <strong>Crie a <code>sp_IniciarCombate</code>:</strong>
+    <ul>
+      <li>Crie um procedimento simples que registra quem está lutando.</li>
+      <li>
+        Ele deve criar uma <strong><code>TEMPORARY TABLE</code></strong> (se não
+        existir) chamada <code>SessaoCombateAtual</code>.
+      </li>
+      <li>
+        Esta tabela terá colunas: <code>PersonagemID_em_luta</code> e
+        <code>MonstroID_em_luta</code>.
+      </li>
+      <li>
+        <code>INSERT</code> o herói e o monstro que estão entrando em batalha.
+        (Ex: CALL sp_IniciarCombate(1, 2); // Aragorn vs Lobo Cinzento)
+      </li>
+    </ul>
+  </li>
+  <li>
+    <strong
+      >Crie a <code>sp_ResolverLoot(IN monstro_derrotado_id INT)</code>:</strong
+    >
+    <ul>
+      <li>Este é o procedimento chamado pelo seu gatilho da Missão 2.</li>
+      <li>
+        Ele deve consultar a <code>SessaoCombateAtual</code> para descobrir qual
+        PersonagemID está na luta contra o <code>monstro_derrotado_id</code>.
+      </li>
+      <li>
+        Ele deve consultar sua tabela <code>MonstroLoot</code> (Missão 1) para
+        ver os drops possíveis.
+      </li>
+      <li>
+        Para cada drop possível, ele deve "rolar um dado" (ex:
+        <code>IF RAND() <= ChanceDrop THEN ...</code>).
+      </li>
+      <li>
+        Se a rolagem for bem-sucedida, ele deve calcular a quantidade e
+        <code>INSERT</code> ou <code>UPDATE</code> o item no
+        <code>InventarioItens</code> do herói vitorioso.
+      </li>
+      <li>
+        Limpe a <code>SessaoCombateAtual</code> (<code>DELETE</code> ou
+        <code>TRUNCATE</code>) ao final.
+      </li>
+    </ul>
+  </li>
+</ol>
